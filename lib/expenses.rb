@@ -1,5 +1,1 @@
-require "expenses/version"
-
-module Expenses
-  # Your code goes here...
-end
+require 'expenses/version'
