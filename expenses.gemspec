@@ -8,6 +8,7 @@ def add_development_dependencies(spec)
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'cucumber'
+  spec.add_development_dependency 'thor'
   spec.add_development_dependency 'aruba'
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'ZenTest'

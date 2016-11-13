@@ -1,0 +1,4 @@
+---
+default: --color
+autotest: --format pretty --color
+autotest-all: --format pretty --color

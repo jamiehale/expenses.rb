@@ -1,10 +1,9 @@
 #! /usr/bin/env ruby
 
-def usage
-  puts 'Usage: expenses [options] <filename>'
-  exit(1)
+require 'expenses'
+
+begin
+  Expenses::CLI.start
+rescue StandardError => e
+  puts e
 end
-
-usage if ARGV.empty?
-
-CLI.new(ARGV).run
