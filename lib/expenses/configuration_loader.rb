@@ -3,6 +3,18 @@ module Expenses
   ## Loads configuration from file
   class ConfigurationLoader
 
+    def initialize
+      @loaders = {
+        account: AccountLoader.new,
+        once: OneTimeExpenseLoader.new,
+        daily: DailyExpenseLoader.new,
+        monthly: MonthlyExpenseLoader.new,
+        weekly: WeeklyExpenseLoader.new,
+        biweekly: BiWeeklyExpenseLoader.new,
+        budget: BudgetExpenseLoader.new
+      }
+    end
+
     def load( filename )
       configuration = Configuration.new
       File.open( filename ) do |f|
@@ -25,62 +37,8 @@ module Expenses
       return if line.empty?
       return if line[ 0 ] == '#'
       tokens = tokenize( line )
-      if tokens[ 0 ] == 'account'
-        configuration.add_account( account_from( tokens, line_count ) )
-      elsif valid_expense_command( tokens[ 0 ] )
-        configuration.add_expense( process_expense( tokens, line_count ) )
-      else
-        raise "Unrecognized command on line #{line_count}: #{tokens[0]}"
-      end
-    end
-
-    def valid_expense_command( command )
-      %w( once daily monthly weekly biweekly budget ).include? command
-    end
-
-    def process_expense( tokens, line_count )
-      return one_time_expense( tokens, line_count ) if tokens[ 0 ] == 'once'
-      return daily_expense( tokens, line_count ) if tokens[ 0 ] == 'daily'
-      return monthly_expense( tokens, line_count ) if tokens[ 0 ] == 'monthly'
-      return weekly_expense( tokens, line_count ) if tokens[ 0 ] == 'weekly'
-      return biweekly_expense( tokens, line_count ) if tokens[ 0 ] == 'biweekly'
-      return budget_expense( tokens, line_count ) if tokens[ 0 ] == 'budget'
-    end
-
-    def account_from( tokens, line_count )
-      raise "Syntax error on line #{line_count}" unless tokens.length == 3
-      Account.new( tokens[ 1 ], tokens[ 2 ].to_f )
-    end
-
-    def one_time_expense( tokens, line_count )
-      raise "Syntax error on line #{line_count}" unless tokens.length == 4
-      OneTimeExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] )
-    end
-
-    def daily_expense( tokens, line_count )
-      raise "Syntax error on line #{line_count}" unless tokens.length == 3
-      DailyExpense.new( tokens[ 1 ].to_f, tokens[ 2 ] )
-    end
-
-    def monthly_expense( tokens, line_count )
-      raise "Syntax error on line #{line_count}" unless tokens.length == 4
-      MonthlyExpense.new( tokens[ 1 ].to_i, tokens[ 2 ].to_f, tokens[ 3 ] )
-    end
-
-    def weekly_expense( tokens, line_count )
-      raise "Syntax error on line #{line_count}" unless tokens.length == 4
-      WeeklyExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] )
-    end
-
-    def biweekly_expense( tokens, line_count )
-      raise "Syntax error on line #{line_count}" unless tokens.length == 4
-      BiWeeklyExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] )
-    end
-
-    def budget_expense( tokens, line_count )
-      raise "Syntax error on line #{line_count}" unless tokens.length == 4
-      raise "Syntax error on line #{line_count}" unless tokens[ 1 ] == 'monthly'
-      MonthlyBudgetExpense.new( tokens[ 2 ].to_f, tokens[ 3 ] )
+      raise "Unrecognized command on line #{line_count}: #{tokens[0]}" unless @loaders.key? tokens[ 0 ].to_sym
+      @loaders[ tokens[ 0 ].to_sym ].load( tokens, line_count, configuration )
     end
 
     def tokenize( line )
@@ -111,6 +69,98 @@ module Expenses
       end
       tokens << token unless token.empty?
       tokens
+    end
+
+    ## Helper parent class for loaders
+    class Loader
+
+      def validate_token_count( tokens, count, line_count )
+        raise "Syntax error on line #{line_count}" unless tokens.length == count
+      end
+
+      def date( token )
+        Date.parse( token )
+      end
+
+      def float( token )
+        token.to_f
+      end
+
+      def int( token )
+        token.to_i
+      end
+
+    end
+
+    ## Loads an account
+    class AccountLoader < Loader
+
+      def load( tokens, line_count, configuration )
+        validate_token_count( tokens, 3, line_count )
+        configuration.add_account( Account.new( tokens[ 1 ], float( tokens[ 2 ] ) ) )
+      end
+
+    end
+
+    ## Loads a one-time expense
+    class OneTimeExpenseLoader < Loader
+
+      def load( tokens, line_count, configuration )
+        validate_token_count( tokens, 4, line_count )
+        configuration.add_expense( OneTimeExpense.new( date( tokens[ 1 ] ), float( tokens[ 2 ] ), tokens[ 3 ] ) )
+      end
+
+    end
+
+    ## Loads a daily expense
+    class DailyExpenseLoader < Loader
+
+      def load( tokens, line_count, configuration )
+        validate_token_count( tokens, 3, line_count )
+        configuration.add_expense( DailyExpense.new( float( tokens[ 1 ] ), tokens[ 2 ] ) )
+      end
+
+    end
+
+    ## Loads a monthly expense
+    class MonthlyExpenseLoader < Loader
+
+      def load( tokens, line_count, configuration )
+        validate_token_count( tokens, 4, line_count )
+        configuration.add_expense( MonthlyExpense.new( int( tokens[ 1 ] ), float( tokens[ 2 ] ), tokens[ 3 ] ) )
+      end
+
+    end
+
+    ## Loads a weekly expense
+    class WeeklyExpenseLoader < Loader
+
+      def load( tokens, line_count, configuration )
+        validate_token_count( tokens, 4, line_count )
+        configuration.add_expense( WeeklyExpense.new( date( tokens[ 1 ] ), float( tokens[ 2 ] ), tokens[ 3 ] ) )
+      end
+
+    end
+
+    ## Loads a biweekly expense
+    class BiWeeklyExpenseLoader < Loader
+
+      def load( tokens, line_count, configuration )
+        validate_token_count( tokens, 4, line_count )
+        configuration.add_expense( BiWeeklyExpense.new( date( tokens[ 1 ] ), float( tokens[ 2 ] ), tokens[ 3 ] ) )
+      end
+
+    end
+
+    ## Loads a budget-related expense
+    class BudgetExpenseLoader < Loader
+
+      def load( tokens, line_count, configuration )
+        validate_token_count( tokens, 4, line_count )
+        raise "Syntax error on line #{line_count}" unless tokens[ 1 ] == 'monthly'
+        configuration.add_expense( MonthlyBudgetExpense.new( float( tokens[ 2 ] ), tokens[ 3 ] ) )
+      end
+
     end
 
   end
