@@ -17,12 +17,14 @@ module Expenses
       describe 'when run' do
 
         let( :filename ) { 'filename' }
+        let( :loader ) { double( 'loader' ) }
         let( :config ) { double( 'config' ) }
         let( :projection_command ) { double( 'projection command' ) }
         let( :options ) { double( 'options' ) }
 
         before( :each ) do
-          allow( ConfigurationLoader ).to receive( :load ).and_return( config )
+          allow( ConfigurationLoader ).to receive( :new ).and_return( loader )
+          allow( loader ).to receive( :load ).and_return( config )
           allow( ProjectionCommand ).to receive( :new ).and_return( projection_command )
           allow( projection_command ).to receive( :run )
           allow( subject ).to receive( :options ).and_return( options )
@@ -32,8 +34,12 @@ module Expenses
           subject.project( filename )
         end
 
+        it 'creates a loader' do
+          expect( ConfigurationLoader ).to receive( :new )
+        end
+
         it 'opens the input file' do
-          expect( ConfigurationLoader ).to receive( :load ).with( filename )
+          expect( loader ).to receive( :load ).with( filename )
         end
 
         it 'creates a projection command object' do

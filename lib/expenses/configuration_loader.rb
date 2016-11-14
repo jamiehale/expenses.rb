@@ -3,7 +3,7 @@ module Expenses
   ## Loads configuration from file
   class ConfigurationLoader
 
-    def self.load( filename )
+    def load( filename )
       configuration = Configuration.new
       File.open( filename ) do |f|
         read_file( f, configuration )
@@ -11,7 +11,9 @@ module Expenses
       configuration
     end
 
-    def self.read_file( f, configuration )
+    private
+
+    def read_file( f, configuration )
       line_count = 0
       f.each_line do |line|
         line_count += 1
@@ -19,7 +21,7 @@ module Expenses
       end
     end
 
-    def self.process_line( line, line_count, configuration )
+    def process_line( line, line_count, configuration )
       return if line.empty?
       return if line[ 0 ] == '#'
       tokens = tokenize( line )
@@ -32,11 +34,11 @@ module Expenses
       end
     end
 
-    def self.valid_expense_command( command )
+    def valid_expense_command( command )
       %w( once daily monthly weekly biweekly budget ).include? command
     end
 
-    def self.process_expense( tokens, line_count )
+    def process_expense( tokens, line_count )
       return one_time_expense( tokens, line_count ) if tokens[ 0 ] == 'once'
       return daily_expense( tokens, line_count ) if tokens[ 0 ] == 'daily'
       return monthly_expense( tokens, line_count ) if tokens[ 0 ] == 'monthly'
@@ -45,43 +47,43 @@ module Expenses
       return budget_expense( tokens, line_count ) if tokens[ 0 ] == 'budget'
     end
 
-    def self.account_from( tokens, line_count )
+    def account_from( tokens, line_count )
       raise "Syntax error on line #{line_count}" unless tokens.length == 3
       Account.new( tokens[ 1 ], tokens[ 2 ].to_f )
     end
 
-    def self.one_time_expense( tokens, line_count )
+    def one_time_expense( tokens, line_count )
       raise "Syntax error on line #{line_count}" unless tokens.length == 4
       OneTimeExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] )
     end
 
-    def self.daily_expense( tokens, line_count )
+    def daily_expense( tokens, line_count )
       raise "Syntax error on line #{line_count}" unless tokens.length == 3
       DailyExpense.new( tokens[ 1 ].to_f, tokens[ 2 ] )
     end
 
-    def self.monthly_expense( tokens, line_count )
+    def monthly_expense( tokens, line_count )
       raise "Syntax error on line #{line_count}" unless tokens.length == 4
       MonthlyExpense.new( tokens[ 1 ].to_i, tokens[ 2 ].to_f, tokens[ 3 ] )
     end
 
-    def self.weekly_expense( tokens, line_count )
+    def weekly_expense( tokens, line_count )
       raise "Syntax error on line #{line_count}" unless tokens.length == 4
       WeeklyExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] )
     end
 
-    def self.biweekly_expense( tokens, line_count )
+    def biweekly_expense( tokens, line_count )
       raise "Syntax error on line #{line_count}" unless tokens.length == 4
       BiWeeklyExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] )
     end
 
-    def self.budget_expense( tokens, line_count )
+    def budget_expense( tokens, line_count )
       raise "Syntax error on line #{line_count}" unless tokens.length == 4
       raise "Syntax error on line #{line_count}" unless tokens[ 1 ] == 'monthly'
       MonthlyBudgetExpense.new( tokens[ 2 ].to_f, tokens[ 3 ] )
     end
 
-    def self.tokenize( line )
+    def tokenize( line )
       tokens = []
       in_string = false
       token = ''
@@ -110,8 +112,6 @@ module Expenses
       tokens << token unless token.empty?
       tokens
     end
-
-    private_class_method :tokenize
 
   end
 

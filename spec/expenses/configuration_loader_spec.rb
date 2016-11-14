@@ -7,28 +7,29 @@ module Expenses
 
     let( :filename ) { 'filename' }
     let( :stream ) { StringIO.new }
+    let( :loader ) { ConfigurationLoader.new }
 
     before( :each ) do
       allow( File ).to receive( :open ).and_yield( stream )
     end
 
     it 'responds to load' do
-      expect( ConfigurationLoader ).to respond_to( :load ).with( 1 ).argument
+      expect( subject ).to respond_to( :load ).with( 1 ).argument
     end
 
     it 'returns a configuration' do
-      expect( ConfigurationLoader.load( filename ) ).to be_an_instance_of( Configuration )
+      expect( loader.load( filename ) ).to be_an_instance_of( Configuration )
     end
 
     it 'reads the file' do
       expect( File ).to receive( :open ).with( filename )
-      ConfigurationLoader.load( filename )
+      loader.load( filename )
     end
 
     describe 'when loading' do
 
       before( :each ) do
-        @configuration = ConfigurationLoader.load( filename )
+        @configuration = loader.load( filename )
       end
 
       describe 'with an empty stream' do
