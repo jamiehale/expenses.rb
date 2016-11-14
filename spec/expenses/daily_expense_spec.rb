@@ -5,7 +5,7 @@ module Expenses
   describe DailyExpense do
 
     it 'is creatable with an amount and a description' do
-      expect{ DailyExpense.new( 5.00, 'daily' ) }.not_to raise_error
+      expect { DailyExpense.new( 5.00, 'daily' ) }.not_to raise_error
     end
 
     describe 'once created' do

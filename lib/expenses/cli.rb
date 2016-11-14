@@ -2,6 +2,7 @@ require 'thor'
 
 module Expenses
 
+  ## CLI (via Thor)
   class CLI < Thor
 
     desc 'project INPUT_FILE', <<-eos
@@ -10,7 +11,7 @@ module Expenses
     method_option :start, aliases: '-s', desc: 'Specify a start date for the projection'
     method_option :count, aliases: '-c', desc: 'Number of days to project'
     def project( filename )
-      ProjectionCommand.new.run( options, ConfigurationLoader::load( filename ) )
+      ProjectionCommand.new.run( options, ConfigurationLoader.load( filename ) )
     end
 
     default_task :project

@@ -7,6 +7,8 @@ Style/SpaceInsideParens:
     Enabled: false
 Style/SpaceInsideBrackets:
     Enabled: false
+Style/SpaceInsidePercentLiteralDelimiters:
+    Enabled: false
 
 Style/EmptyLinesAroundBlockBody:
     Enabled: false

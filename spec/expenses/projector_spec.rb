@@ -5,7 +5,7 @@ module Expenses
   describe Projector do
 
     it 'can be created' do
-      expect{ Projector.new }.not_to raise_error
+      expect { Projector.new }.not_to raise_error
     end
 
     it 'responds to project' do
@@ -20,7 +20,7 @@ module Expenses
       let( :accounts ) { [ account ] }
       let( :expenses ) { [] }
       let( :projector ) { Projector.new }
-      
+
       before( :each ) do
         @results = projector.project( start, 1, accounts, expenses )
       end

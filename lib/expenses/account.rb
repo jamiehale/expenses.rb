@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Encapsulates an account name and balance
   class Account
 
     attr_accessor :name, :balance

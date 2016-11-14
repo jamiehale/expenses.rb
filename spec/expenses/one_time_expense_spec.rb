@@ -7,7 +7,7 @@ module Expenses
     let( :date ) { Date.new( 2016, 8, 14 ) }
 
     it 'is creatable with a date, an amount, and a description' do
-      expect{ OneTimeExpense.new( Date.new( 2016, 8, 14 ), 40.00, 'A one-time expense' ) }.not_to raise_error
+      expect { OneTimeExpense.new( Date.new( 2016, 8, 14 ), 40.00, 'A one-time expense' ) }.not_to raise_error
     end
 
     describe 'once created' do

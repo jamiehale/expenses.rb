@@ -25,7 +25,7 @@ module Expenses
     end
 
     it 'exists' do
-      expect{ ProjectionCommand.new }.not_to raise_error
+      expect { ProjectionCommand.new }.not_to raise_error
     end
 
     it 'takes an optional projector' do

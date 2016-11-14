@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Runs balance projection
   class ProjectionCommand
 
     def initialize( projector = Projector.new, reporter = Reporter.new )
@@ -15,12 +16,12 @@ module Expenses
     private
 
     def start_date( options )
-      return Date.parse( options[ 'start' ] ) if options.has_key? 'start'
+      return Date.parse( options[ 'start' ] ) if options.key? 'start'
       Date.today
     end
 
     def count( options )
-      return options[ 'count' ].to_i if options.has_key? 'count'
+      return options[ 'count' ].to_i if options.key? 'count'
       10
     end
 

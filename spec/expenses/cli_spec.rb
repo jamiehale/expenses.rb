@@ -5,7 +5,7 @@ module Expenses
   describe CLI do
 
     it 'can be created' do
-      expect{ CLI.new }.not_to raise_error
+      expect { CLI.new }.not_to raise_error
     end
 
     describe 'project command' do

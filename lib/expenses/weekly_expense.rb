@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Expense that applies on the same day every week
   class WeeklyExpense
 
     attr_reader :date, :amount, :description
@@ -11,7 +12,7 @@ module Expenses
     end
 
     def applies_on?( date )
-      ( date - @date ).abs % 7 == 0
+      ( ( date - @date ).abs % 7 ).zero?
     end
 
     def amount_for( date )

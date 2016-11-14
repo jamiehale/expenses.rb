@@ -5,7 +5,7 @@ module Expenses
   describe ProjectionResults do
 
     it 'exists' do
-      expect{ ProjectionResults.new }.not_to raise_error
+      expect { ProjectionResults.new }.not_to raise_error
     end
 
     it 'starts empty' do
@@ -17,7 +17,7 @@ module Expenses
     end
 
     it 'can be created with names' do
-      expect( ProjectionResults.new( [ 'First', 'Second' ] ).account_names ).to contain_exactly( 'First', 'Second' )
+      expect( ProjectionResults.new( %w( First Second ) ).account_names ).to contain_exactly( 'First', 'Second' )
     end
 
   end

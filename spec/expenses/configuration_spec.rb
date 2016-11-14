@@ -5,7 +5,7 @@ module Expenses
   describe Configuration do
 
     it 'exists' do
-      expect{ Configuration.new }.not_to raise_error
+      expect { Configuration.new }.not_to raise_error
     end
 
     describe 'when initialized' do

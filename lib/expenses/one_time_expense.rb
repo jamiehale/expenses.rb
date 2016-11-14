@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Expense that only happens once
   class OneTimeExpense
 
     attr_reader :date, :amount, :description

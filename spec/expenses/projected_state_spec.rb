@@ -5,7 +5,7 @@ module Expenses
   describe ProjectedState do
 
     it 'exists' do
-      expect{ ProjectedState.new }.not_to raise_error
+      expect { ProjectedState.new }.not_to raise_error
     end
 
     it 'takes an optional date' do

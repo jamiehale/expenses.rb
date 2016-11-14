@@ -5,7 +5,7 @@ module Expenses
   describe BiWeeklyExpense do
 
     it 'is creatable with a date, an amount, and a description' do
-      expect{ BiWeeklyExpense.new( Date.new( 2016, 8, 14 ), 20.00, 'Weekly' ) }.not_to raise_error
+      expect { BiWeeklyExpense.new( Date.new( 2016, 8, 14 ), 20.00, 'Weekly' ) }.not_to raise_error
     end
 
     describe 'once created' do

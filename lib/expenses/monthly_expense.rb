@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Expense that applies on the same day every month
   class MonthlyExpense
 
     attr_reader :day, :amount, :description

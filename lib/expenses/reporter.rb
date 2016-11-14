@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Outputs CSV-formatted report
   class Reporter
 
     def initialize( stream = STDOUT )

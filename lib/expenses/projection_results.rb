@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Encapsulates the results of the projection
   class ProjectionResults
 
     attr_reader :days, :account_names

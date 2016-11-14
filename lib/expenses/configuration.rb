@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Encapsulates all entries from a configuration file
   class Configuration
 
     attr_reader :accounts, :expenses

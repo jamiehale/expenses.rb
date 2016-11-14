@@ -5,7 +5,7 @@ module Expenses
   describe Account do
 
     it 'exists' do
-      expect{ Account.new }.not_to raise_error
+      expect { Account.new }.not_to raise_error
     end
 
     it 'can be created with an account name' do
@@ -25,7 +25,7 @@ module Expenses
       end
 
       describe 'with a name' do
-        
+
         let( :name ) { 'Main' }
         let( :account ) { Account.new( name ) }
 

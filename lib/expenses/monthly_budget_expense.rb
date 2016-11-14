@@ -1,5 +1,6 @@
 module Expenses
 
+  ## An expense that applies a monthly amount spread across every day
   class MonthlyBudgetExpense
 
     attr_reader :amount, :description
@@ -9,7 +10,7 @@ module Expenses
       @description = description
     end
 
-    def applies_on?( date )
+    def applies_on?( _ )
       true
     end
 
@@ -30,4 +31,3 @@ module Expenses
   end
 
 end
-

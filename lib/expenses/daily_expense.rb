@@ -1,5 +1,6 @@
 module Expenses
 
+  ## An expense that applies every day
   class DailyExpense
 
     attr_reader :amount, :description
@@ -9,11 +10,11 @@ module Expenses
       @description = description
     end
 
-    def applies_on?( date )
+    def applies_on?( _ )
       true
     end
 
-    def amount_for( date )
+    def amount_for( _ )
       @amount
     end
 

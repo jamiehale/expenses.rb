@@ -1,5 +1,6 @@
 module Expenses
 
+  ## Encapsulates a set of balances one a day
   class ProjectedState
 
     attr_reader :date, :balances
@@ -14,7 +15,7 @@ module Expenses
     end
 
     def to_csv
-      @date.to_s + ',' + @balances.map {|b| "%.2f" % b }.join( ',' )
+      @date.to_s + ',' + @balances.map { |b| format( '%.2f', b ) }.join( ',' )
     end
 
   end

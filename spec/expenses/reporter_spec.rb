@@ -5,7 +5,7 @@ module Expenses
   describe Reporter do
 
     it 'exists' do
-      expect{ Reporter.new }.not_to raise_error
+      expect { Reporter.new }.not_to raise_error
     end
 
     it 'takes an options output stream' do

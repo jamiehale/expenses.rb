@@ -61,7 +61,7 @@ module Expenses
 
       describe 'with a stream with a commented line' do
 
-        let( :stream ) { StringIO.new( "#" ) }
+        let( :stream ) { StringIO.new( '#' ) }
 
         it 'returns a configuration with no accounts' do
           expect( @configuration.accounts ).to be_empty
