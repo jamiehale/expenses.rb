@@ -134,6 +134,26 @@ module Expenses
 
       end
 
+      describe 'with a stream with a monthly budget expense' do
+
+        let( :stream ) { StringIO.new( 'budget monthly 5.00 "A monthly budget expense"' ) }
+
+        it 'returns a configuration with a monthly budget expense' do
+          expect( @configuration.expenses ).to contain_exactly( MonthlyBudgetExpense.new( 5.00, 'A monthly budget expense' ) )
+        end
+
+      end
+
+      describe 'with a stream with an annual budget expense' do
+
+        let( :stream ) { StringIO.new( 'budget annual 5.00 "An annual budget expense"' ) }
+
+        it 'returns a configuration with an annual budget expense' do
+          expect( @configuration.expenses ).to contain_exactly( AnnualBudgetExpense.new( 5.00, 'An annual budget expense' ) )
+        end
+
+      end
+
     end
 
   end

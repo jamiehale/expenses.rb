@@ -12,6 +12,7 @@ module Expenses
     end
 
     def applies_on?( date )
+      return date.day == Date.new( date.year, date.month, @day ).day if @day < 0
       date.day == @day
     end
 

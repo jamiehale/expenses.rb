@@ -59,6 +59,36 @@ module Expenses
 
       end
 
+      describe 'with a negative day' do
+
+        let( :day ) { -1 }
+
+        it 'is applicable on the last day of the month' do
+          1.upto( 12 ) do |i|
+            expect( expense.applies_on?( Date.new( 2016, i, day ) ) ).to be true
+          end
+        end
+
+        it 'has value on the last day of the month' do
+          1.upto( 12 ) do |i|
+            expect( expense.amount_for( Date.new( 2016, i, day ) ) ).to eq( amount )
+          end
+        end
+
+        it 'is not applicable on every other day of the month' do
+          1.upto( 29 ) do |i|
+            expect( expense.applies_on?( Date.new( 2016, 11, i ) ) ).to be false
+          end
+        end
+
+        it 'has no value on every other day of the month' do
+          1.upto( 29 ) do |i|
+            expect( expense.amount_for( Date.new( 2016, 11, i ) ) ).to eq( 0.00 )
+          end
+        end
+
+      end
+
     end
 
   end

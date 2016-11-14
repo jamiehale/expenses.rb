@@ -157,8 +157,18 @@ module Expenses
 
       def load( tokens, line_number, configuration )
         validate_token_count( tokens, 4, line_number )
-        raise "Syntax error on line #{line_number}" unless tokens[ 1 ] == 'monthly'
-        configuration.add_expense( MonthlyBudgetExpense.new( float( tokens[ 2 ] ), tokens[ 3 ] ) )
+        raise "Syntax error on line #{line_number}" unless valid_type?( tokens[ 1 ] )
+        if tokens[ 1 ] == 'monthly'
+          configuration.add_expense( MonthlyBudgetExpense.new( float( tokens[ 2 ] ), tokens[ 3 ] ) )
+        else
+          configuration.add_expense( AnnualBudgetExpense.new( float( tokens[ 2 ] ), tokens[ 3 ] ) )
+        end
+      end
+
+      private
+
+      def valid_type?( type )
+        %w( monthly annual ).include? type
       end
 
     end

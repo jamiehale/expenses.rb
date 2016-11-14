@@ -47,3 +47,20 @@ Feature: Expense Projection
         2016-12-15,60.00
         2016-12-16,60.00
         """
+
+    Scenario: A monthly expense at the end of the month
+        Given a file named "tmp/input.yml" with:
+        """
+        account "Main" 100.00
+        monthly -1 20.00 "A monthly bill on the last day of the month"
+        """
+        When I run `expenses --start 2016-11-28 --count 5 tmp/input.yml`
+        Then the output should contain:
+        """
+        Date,Main
+        2016-11-28,100.00
+        2016-11-29,100.00
+        2016-11-30,80.00
+        2016-12-01,80.00
+        2016-12-02,80.00
+        """
