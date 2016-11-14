@@ -8,7 +8,7 @@ module Expenses
     end
 
     def run( options, configuration )
-      results = @projector.project( start_date( options ), count( options ), configuration.accounts )
+      results = @projector.project( start_date( options ), count( options ), configuration.accounts, configuration.expenses )
       @reporter.report( results )
     end
 

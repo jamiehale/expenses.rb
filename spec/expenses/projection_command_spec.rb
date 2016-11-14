@@ -6,7 +6,8 @@ module Expenses
 
     let( :projector ) { double( 'projector' ) }
     let( :accounts ) { double( 'accounts' ) }
-    let( :configuration ) { double( 'configuration', accounts: accounts ) }
+    let( :expenses ) { double( 'expenses' ) }
+    let( :configuration ) { double( 'configuration', accounts: accounts, expenses: expenses ) }
     let( :start ) { Date.new( 2016, 8, 14 ) }
     let( :count ) { 9 }
     let( :options ) do
@@ -32,7 +33,7 @@ module Expenses
     end
 
     it 'defers to the projector' do
-      expect( projector ).to receive( :project ).with( start, count, accounts )
+      expect( projector ).to receive( :project ).with( start, count, accounts, expenses )
       ProjectionCommand.new( projector, reporter ).run( options, configuration )
     end
 

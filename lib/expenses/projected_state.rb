@@ -4,9 +4,9 @@ module Expenses
 
     attr_reader :date, :balances
 
-    def initialize( date = Date.today )
+    def initialize( date = Date.today, balances = [] )
       @date = date
-      @balances = []
+      @balances = balances
     end
 
     def add_balance( balance )

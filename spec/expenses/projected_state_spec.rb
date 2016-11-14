@@ -9,7 +9,7 @@ module Expenses
     end
 
     it 'takes an optional date' do
-      expect( ProjectedState ).to respond_to( :new ).with( 0..1 ).arguments
+      expect( ProjectedState ).to respond_to( :new ).with( 0..2 ).arguments
     end
 
     describe 'once created' do

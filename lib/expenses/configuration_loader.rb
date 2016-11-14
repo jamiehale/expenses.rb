@@ -16,6 +16,24 @@ module Expenses
             if tokens.length == 3
               configuration.add_account( Account.new( tokens[ 1 ], tokens[ 2 ].to_f ) )
             end
+          elsif tokens[ 0 ] == 'once'
+            if tokens.length == 4
+              configuration.add_expense( OneTimeExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] ) )
+            else
+              raise "Syntax error on line #{line_count}"
+            end
+          elsif tokens[ 0 ] == 'daily'
+            if tokens.length == 3
+              configuration.add_expense( DailyExpense.new( tokens[ 1 ].to_f, tokens[ 2 ] ) )
+            else
+              raise "Syntax error on line #{line_count}"
+            end
+          elsif tokens[ 0 ] == 'monthly'
+            if tokens.length == 4
+              configuration.add_expense( MonthlyExpense.new( tokens[ 1 ].to_i, tokens[ 2 ].to_f, tokens[ 3 ] ) )
+            else
+              raise "Syntax error on line #{line_count}"
+            end
           else
             raise "Unrecognized command on line #{line_count}: #{tokens[0]}"
           end
@@ -52,7 +70,7 @@ module Expenses
           token << c
         end
       end
-      tokens << token
+      tokens << token unless token.empty?
       tokens
     end
 
