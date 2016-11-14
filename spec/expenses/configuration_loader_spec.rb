@@ -114,6 +114,16 @@ module Expenses
 
       end
 
+      describe 'with a stream with an annual expense' do
+
+        let( :stream ) { StringIO.new( 'annual 11-25 5.00 "An annual expense"' ) }
+
+        it 'returns a configuration with an annual expense' do
+          expect( @configuration.expenses ).to contain_exactly( AnnualExpense.new( 11, 25, 5.00, 'An annual expense' ) )
+        end
+
+      end
+
       describe 'with a stream with a weekly expense' do
 
         let( :stream ) { StringIO.new( 'weekly 2016-08-14 5.00 "A weekly expense"' ) }

@@ -8,6 +8,7 @@ module Expenses
         account: AccountLoader.new,
         once: OneTimeExpenseLoader.new,
         daily: DailyExpenseLoader.new,
+        annual: AnnualExpenseLoader.new,
         monthly: MonthlyExpenseLoader.new,
         weekly: WeeklyExpenseLoader.new,
         biweekly: BiWeeklyExpenseLoader.new,
@@ -118,6 +119,17 @@ module Expenses
       def load( tokens, line_number, configuration )
         validate_token_count( tokens, 3, line_number )
         configuration.add_expense( DailyExpense.new( float( tokens[ 1 ] ), tokens[ 2 ] ) )
+      end
+
+    end
+
+    ## Loads an annual expense
+    class AnnualExpenseLoader < Loader
+
+      def load( tokens, line_number, configuration )
+        validate_token_count( tokens, 4, line_number )
+        month, day = tokens[ 1 ].split( '-' ).map( &:to_i )
+        configuration.add_expense( AnnualExpense.new( month, day, float( tokens[ 2 ] ), tokens[ 3 ] ) )
       end
 
     end
