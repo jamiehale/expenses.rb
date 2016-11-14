@@ -14,7 +14,7 @@ module Expenses
       true
     end
 
-    def amount_for( date )
+    def amount_for( _ )
       @amount / 365
     end
 
