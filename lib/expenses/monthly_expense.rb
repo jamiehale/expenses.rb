@@ -14,6 +14,11 @@ module Expenses
       date.day == @day
     end
 
+    def amount_for( date )
+      return @amount if applies_on?( date )
+      0.00
+    end
+
     def ==( other )
       @day == other.day && @amount == other.amount && @description == other.description
     end

@@ -7,8 +7,12 @@ module Expenses
       balances = accounts.map {|a| a.balance}
       date = from
       count.times do
+        notes = []
         expenses.each do |expense|
-          balances[ 0 ] -= expense.amount if expense.applies_on?( date )
+          if expense.applies_on?( date )
+            balances[ 0 ] -= expense.amount_for( date )
+            notes << expense.description
+          end
         end
         results.add_day( ProjectedState.new( date, balances.dup ) )
         date = date.next_day

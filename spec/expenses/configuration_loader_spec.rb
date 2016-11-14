@@ -113,6 +113,26 @@ module Expenses
 
       end
 
+      describe 'with a stream with a weekly expense' do
+
+        let( :stream ) { StringIO.new( 'weekly 2016-08-14 5.00 "A weekly expense"' ) }
+
+        it 'returns a configuration with a weekly expense' do
+          expect( @configuration.expenses ).to contain_exactly( WeeklyExpense.new( Date.new( 2016, 8, 14 ), 5.00, 'A weekly expense' ) )
+        end
+
+      end
+
+      describe 'with a stream with a bi-weekly expense' do
+
+        let( :stream ) { StringIO.new( 'biweekly 2016-08-14 5.00 "A bi-weekly expense"' ) }
+
+        it 'returns a configuration with a bi-weekly expense' do
+          expect( @configuration.expenses ).to contain_exactly( BiWeeklyExpense.new( Date.new( 2016, 8, 14 ), 5.00, 'A bi-weekly expense' ) )
+        end
+
+      end
+
     end
 
   end

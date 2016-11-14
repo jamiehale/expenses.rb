@@ -39,9 +39,21 @@ module Expenses
           end
         end
 
+        it 'has value on its day of the month' do
+          1.upto( 12 ) do |i|
+            expect( expense.amount_for( Date.new( 2016, i, 1 ) ) ).to eq( amount )
+          end
+        end
+
         it 'is not applicable on any other day of the month' do
           1.upto( 30 ) do |i|
             expect( expense.applies_on?( Date.new( 2016, 1, i ) ) ).to be false unless i == day
+          end
+        end
+
+        it 'is not applicable on any other day of the month' do
+          1.upto( 30 ) do |i|
+            expect( expense.amount_for( Date.new( 2016, 1, i ) ) ).to eq( 0.00 ) unless i == day
           end
         end
 

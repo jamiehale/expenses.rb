@@ -28,12 +28,24 @@ module Expenses
           expect( expense.applies_on?( Date.today ) ).to be true
         end
 
+        it 'has value today' do
+          expect( expense.amount_for( Date.today ) ).to eq( amount )
+        end
+
         it 'is applicable 100 years ago' do
           expect( expense.applies_on?( Date.new( 1916, 5, 30 ) ) ).to be true
         end
 
+        it 'has value 100 years ago' do
+          expect( expense.amount_for( Date.new( 1916, 5, 30 ) ) ).to eq( amount )
+        end
+
         it 'is applicable in the future' do
           expect( expense.applies_on?( Date.new( 2543, 1, 1 ) ) ).to be true
+        end
+
+        it 'has value in the future' do
+          expect( expense.amount_for( Date.new( 2543, 1, 1 ) ) ).to eq( amount )
         end
 
       end

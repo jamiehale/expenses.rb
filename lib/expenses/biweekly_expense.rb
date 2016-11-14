@@ -1,6 +1,6 @@
 module Expenses
 
-  class OneTimeExpense
+  class BiWeeklyExpense
 
     attr_reader :date, :amount, :description
 
@@ -11,7 +11,7 @@ module Expenses
     end
 
     def applies_on?( date )
-      @date == date
+      ( date - @date ).abs % 14 == 0
     end
 
     def amount_for( date )
@@ -19,7 +19,7 @@ module Expenses
       0.00
     end
 
-    def ==(other)
+    def ==( other )
       @date == other.date && @amount == other.amount && @description == other.description
     end
 

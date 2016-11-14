@@ -34,6 +34,28 @@ module Expenses
             else
               raise "Syntax error on line #{line_count}"
             end
+          elsif tokens[ 0 ] == 'weekly'
+            if tokens.length == 4
+              configuration.add_expense( WeeklyExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] ) )
+            else
+              raise "Syntax error on line #{line_count}"
+            end
+          elsif tokens[ 0 ] == 'biweekly'
+            if tokens.length == 4
+              configuration.add_expense( BiWeeklyExpense.new( Date.parse( tokens[ 1 ] ), tokens[ 2 ].to_f, tokens[ 3 ] ) )
+            else
+              raise "Syntax error on line #{line_count}"
+            end
+          elsif tokens[ 0 ] == 'budget'
+            if tokens.length == 4
+              if tokens[ 1 ] == 'monthly'
+                configuration.add_expense( MonthlyBudgetExpense.new( tokens[ 2 ].to_f, tokens[ 3 ] ) )
+              else
+                raise "Syntax error on line #{line_count}"
+              end
+            else
+              raise "Syntax error on line #{line_count}"
+            end
           else
             raise "Unrecognized command on line #{line_count}: #{tokens[0]}"
           end

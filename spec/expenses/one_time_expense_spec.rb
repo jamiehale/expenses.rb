@@ -34,12 +34,24 @@ module Expenses
           expect( expense.applies_on?( date ) ).to be true
         end
 
+        it 'has an amount on its date' do
+          expect( expense.amount_for( date ) ).to eq( amount )
+        end
+
         it 'does not apply before its date' do
           expect( expense.applies_on?( date.prev_day ) ).to be false
         end
 
+        it 'has 0 value before its date' do
+          expect( expense.amount_for( date.prev_day ) ).to eq( 0.00 )
+        end
+
         it 'does not apply after its date' do
           expect( expense.applies_on?( date.next_day ) ).to be false
+        end
+
+        it 'has 0 value after its date' do
+          expect( expense.amount_for( date.next_day ) ).to eq( 0.00 )
         end
 
       end
