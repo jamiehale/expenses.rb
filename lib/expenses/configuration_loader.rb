@@ -26,19 +26,19 @@ module Expenses
     private
 
     def read_file( f, configuration )
-      line_count = 0
+      line_number = 0
       f.each_line do |line|
-        line_count += 1
-        process_line( line.strip, line_count, configuration )
+        line_number += 1
+        process_line( line.strip, line_number, configuration )
       end
     end
 
-    def process_line( line, line_count, configuration )
+    def process_line( line, line_number, configuration )
       return if line.empty?
       return if line[ 0 ] == '#'
       tokens = tokenize( line )
-      raise "Unrecognized command on line #{line_count}: #{tokens[0]}" unless @loaders.key? tokens[ 0 ].to_sym
-      @loaders[ tokens[ 0 ].to_sym ].load( tokens, line_count, configuration )
+      raise "Unrecognized command on line #{line_number}: #{tokens[0]}" unless @loaders.key? tokens[ 0 ].to_sym
+      @loaders[ tokens[ 0 ].to_sym ].load( tokens, line_number, configuration )
     end
 
     def tokenize( line )
@@ -74,8 +74,8 @@ module Expenses
     ## Helper parent class for loaders
     class Loader
 
-      def validate_token_count( tokens, count, line_count )
-        raise "Syntax error on line #{line_count}" unless tokens.length == count
+      def validate_token_count( tokens, count, line_number )
+        raise "Syntax error on line #{line_number}" unless tokens.length == count
       end
 
       def date( token )
@@ -95,8 +95,8 @@ module Expenses
     ## Loads an account
     class AccountLoader < Loader
 
-      def load( tokens, line_count, configuration )
-        validate_token_count( tokens, 3, line_count )
+      def load( tokens, line_number, configuration )
+        validate_token_count( tokens, 3, line_number )
         configuration.add_account( Account.new( tokens[ 1 ], float( tokens[ 2 ] ) ) )
       end
 
@@ -105,8 +105,8 @@ module Expenses
     ## Loads a one-time expense
     class OneTimeExpenseLoader < Loader
 
-      def load( tokens, line_count, configuration )
-        validate_token_count( tokens, 4, line_count )
+      def load( tokens, line_number, configuration )
+        validate_token_count( tokens, 4, line_number )
         configuration.add_expense( OneTimeExpense.new( date( tokens[ 1 ] ), float( tokens[ 2 ] ), tokens[ 3 ] ) )
       end
 
@@ -115,8 +115,8 @@ module Expenses
     ## Loads a daily expense
     class DailyExpenseLoader < Loader
 
-      def load( tokens, line_count, configuration )
-        validate_token_count( tokens, 3, line_count )
+      def load( tokens, line_number, configuration )
+        validate_token_count( tokens, 3, line_number )
         configuration.add_expense( DailyExpense.new( float( tokens[ 1 ] ), tokens[ 2 ] ) )
       end
 
@@ -125,8 +125,8 @@ module Expenses
     ## Loads a monthly expense
     class MonthlyExpenseLoader < Loader
 
-      def load( tokens, line_count, configuration )
-        validate_token_count( tokens, 4, line_count )
+      def load( tokens, line_number, configuration )
+        validate_token_count( tokens, 4, line_number )
         configuration.add_expense( MonthlyExpense.new( int( tokens[ 1 ] ), float( tokens[ 2 ] ), tokens[ 3 ] ) )
       end
 
@@ -135,8 +135,8 @@ module Expenses
     ## Loads a weekly expense
     class WeeklyExpenseLoader < Loader
 
-      def load( tokens, line_count, configuration )
-        validate_token_count( tokens, 4, line_count )
+      def load( tokens, line_number, configuration )
+        validate_token_count( tokens, 4, line_number )
         configuration.add_expense( WeeklyExpense.new( date( tokens[ 1 ] ), float( tokens[ 2 ] ), tokens[ 3 ] ) )
       end
 
@@ -145,8 +145,8 @@ module Expenses
     ## Loads a biweekly expense
     class BiWeeklyExpenseLoader < Loader
 
-      def load( tokens, line_count, configuration )
-        validate_token_count( tokens, 4, line_count )
+      def load( tokens, line_number, configuration )
+        validate_token_count( tokens, 4, line_number )
         configuration.add_expense( BiWeeklyExpense.new( date( tokens[ 1 ] ), float( tokens[ 2 ] ), tokens[ 3 ] ) )
       end
 
@@ -155,9 +155,9 @@ module Expenses
     ## Loads a budget-related expense
     class BudgetExpenseLoader < Loader
 
-      def load( tokens, line_count, configuration )
-        validate_token_count( tokens, 4, line_count )
-        raise "Syntax error on line #{line_count}" unless tokens[ 1 ] == 'monthly'
+      def load( tokens, line_number, configuration )
+        validate_token_count( tokens, 4, line_number )
+        raise "Syntax error on line #{line_number}" unless tokens[ 1 ] == 'monthly'
         configuration.add_expense( MonthlyBudgetExpense.new( float( tokens[ 2 ] ), tokens[ 3 ] ) )
       end
 
