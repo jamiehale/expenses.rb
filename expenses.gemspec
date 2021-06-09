@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'expenses/version'
 
 def add_development_dependencies(spec)
-  spec.add_development_dependency 'bundler', '~> 1.13'
+  spec.add_development_dependency "bundler", ">= 2.2.10"
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'cucumber'
