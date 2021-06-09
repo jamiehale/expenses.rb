@@ -5,7 +5,7 @@ require 'expenses/version'
 
 def add_development_dependencies(spec)
   spec.add_development_dependency "bundler", ">= 2.2.10"
-  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency "rake", ">= 12.3.3"
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'cucumber'
   spec.add_development_dependency 'thor'
